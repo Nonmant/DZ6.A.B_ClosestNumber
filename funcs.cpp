@@ -29,15 +29,25 @@ void parseFile(std::istream & input, std::ostream & output){
     std::copy_n(std::istream_iterator<int>(input), n, source.begin());
     std::copy_n(std::istream_iterator<int>(input), k, search.begin());
 
-    long int diff1,diff2;
+    long long int diff1,diff2;
     int ans;
     for(auto a: search){
         auto index = binSearchLowerBound(source,a);
         if(index == source.size()-1){
-            ans = source[index];
+            if(source.size()>1){
+                diff1 = (long long int)(a) - (long long int)(source[index-1]);
+                diff2 = (long long int)(a) - (long long int)(source[index]);
+                if(std::abs(diff1) <= std::abs(diff2)){
+                    ans = source[index-1];
+                } else {
+                    ans = source[index];
+                }
+            } else {
+                ans = source[index];
+            }
         } else {
-            diff1 = a - source[index];
-            diff2 = a - source[index+1];
+            diff1 = (long long int)(a) - (long long int)(source[index]);
+            diff2 = (long long int)(a) - (long long int)(source[index+1]);
             if(std::abs(diff1) <= std::abs(diff2)){
                 ans = source[index];
             } else {
